@@ -4,9 +4,7 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -15,12 +13,14 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with: 
+        submodules: recursive
 
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
 
     - name: Build Dumper Project
-      run: msbuild .\Dumper\Dumper.vcxproj /p:Configuration=Release /p:Platform=x64 /p:WarningLevel=0
+      run: msbuild Dumper-7.sln /p:Configuration=Release /p:Platform=x64 /p:WarningLevel=0
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
